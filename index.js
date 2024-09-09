@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const nodemailer = require('nodemailer');
 const app = express();
@@ -8,8 +9,8 @@ const transporter = nodemailer.createTransport({
   port: 465,
   secure: true,
   auth: {
-    user: 'voltster95@gmail.com',
-    pass: 'pzcjbbtqrnmtedgd'
+    user: process.env.EMAIL,
+    pass: process.env.PASS
   }
 });
 
@@ -19,8 +20,8 @@ app.post('/send-email', async (req, res) => {
   try {
     // Send notification email to yourself
     const notificationEmail = await transporter.sendMail({
-      from: 'voltster95@gmail.com',
-      to: 'voltster95@gmail.com',
+      from: process.env.EMAIL,
+      to: process.env.EMAIL,
       subject: 'Enquiry Request',
       html: `
         <p>${text}</p>
@@ -36,7 +37,7 @@ app.post('/send-email', async (req, res) => {
 
     // Send confirmation email to the client
     const confirmationEmail = await transporter.sendMail({
-      from: 'voltster95@gmail.com',
+      from: process.env.EMAIL,
       to: clientMail,
       subject: 'Confirmation of Your Enquiry',
       html: `
